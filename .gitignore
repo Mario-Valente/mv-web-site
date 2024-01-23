@@ -1,0 +1,4 @@
+terraform.tfplan
+*.sw?
+terraform-migrate.tfstate
+.terraform

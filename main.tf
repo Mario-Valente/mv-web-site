@@ -80,7 +80,7 @@ resource "aws_s3_bucket_policy" "site" {
 }
 ################################################## IAM
 resource "aws_iam_user" "service_s3_bucket_access" {
-  name = lower("$mveletronica_s3_bucket_write_access")
+  name = lower("mveletronica_s3_bucket_write_access")
   tags = {
     provisioner = "terraform"
     project     = "External-Site"
@@ -127,31 +127,15 @@ output "iam_user_name" {
   value       = aws_iam_access_key.service_s3_bucket_access.user
 }
 
-output "iam_access_key_id" {
-  description = "User name"
-  value       = aws_iam_access_key.service_s3_bucket_access.id
-}
-
-output "iam_secret_key" {
-  description = "User name"
-  value       = aws_iam_access_key.service_s3_bucket_access.secret
-}
-
-#OUTPUT - URL BUCKET
-output "website_endpoint" {
-  description = "Bucket endpoint"
-  value       = data.aws_s3_bucket.site.website_endpoint
-}
-
 #### Versions
 
 terraform {
-  required_version = ">= 0.14"
+  required_version = ">= 1.3"
 
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 4.57"
     }
   }
 }
@@ -159,16 +143,9 @@ terraform {
 #### Backend
 terraform {
   backend "s3" {
-    bucket  = aws_s3_bucket.site
-    key     = "/terraform"
+    bucket  = "tf-state-local-teste"
+    key     = "mv-site"
     region  = "us-east-1"
     encrypt = true
   }
-}
-######### Copy files
-
-resource "aws_s3_object" "mv-site" {
-  bucket = aws_s3_bucket.site
-  key    = "/"
-  source = "./"
 }
