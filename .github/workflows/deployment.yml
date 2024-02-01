@@ -36,9 +36,9 @@ jobs:
       id: tf_validate
       run: terraform validate
 
-    - name: Terraform Show Plan
-      id: tf_show
-      run: terraform show plan.out
+    - name: Terraform plan
+      id: tf_plan
+      run: terraform plan -out=plan.out -input=false -lock=false
 
     - name: Terraform Apply
       id: tf_apply
